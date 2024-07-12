@@ -68,6 +68,9 @@ foreach ($User in $Users) {
         # Hinzufügen des Attributes <mailNickname> zur BenutzerEntität über die Variable <alias>
         $NewUserParams.OtherAttributes = @{mailNickname = $User.alias }
 
+        # Hinzufügen des Attributes <employeeNumber> zur BenutzerEntität über die Variable <personalnummer>
+        $NewUserParams.OtherAttributes = @{employeeNumber = $User.personalnummer}
+
         # Add the info attribute to OtherAttributes only if Notes field contains a value
         if (![string]::IsNullOrEmpty($User.Notes)) {
             $NewUserParams.OtherAttributes = @{info = $User.Notes }
