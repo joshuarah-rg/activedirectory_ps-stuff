@@ -1,0 +1,1 @@
+Get-ADUser -Filter * -SearchBase "OU" | Set-ADUser -Enabled $true -ChangePasswordAtLogon $true
