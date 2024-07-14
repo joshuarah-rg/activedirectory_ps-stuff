@@ -1,0 +1,21 @@
+# Liste der alten und neuen Benutzer
+
+$BenutzerListe = @(
+    @{Alter="AlterBenutzer1"; Neuer="NeuerBenutzer1"},
+    @{Alter="AlterBenutzer2"; Neuer="NeuerBenutzer2"},
+    # Fügen Sie hier weitere Benutzer hinzu
+)
+
+
+# Durchlaufen der Benutzerliste und Ausführen der Befehle
+
+foreach ($Benutzer in $BenutzerListe) {
+    # Deaktivieren des alten Benutzerpostfachs
+    Disable-Mailbox -Identity $Benutzer.Alter -Confirm:$false
+
+    # Warten, bis das Postfach vollständig deaktiviert ist
+    Start-Sleep -Seconds 5
+
+    # Verbinden des Postfachs mit einem neuen Benutzerkonto
+    Connect-Mailbox -Identity $Benutzer.Alter -Database "MailboxDatenbank" -User $Benutzer.Neuer
+}
