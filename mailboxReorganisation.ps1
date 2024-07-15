@@ -2,7 +2,7 @@
 $Path = "Pfad zur CSV"
 
 # Importieren der Benutzerliste aus der CSV-Datei
-$BenutzerListe = Import-Csv -Path $Path
+$BenutzerListe = Import-Csv -Path $Path -Delimiter ';'
 
 # Durchlaufen der Benutzerliste und Ausfuehren der Befehle
 foreach ($Benutzer in $BenutzerListe) {
