@@ -34,7 +34,7 @@ foreach ($Benutzer in $BenutzerListe) {
 
     # E-Mail-Aliasse zum neuen Konto hinzufuegen
     Set-Mailbox -Identity $Benutzer.NeuerBenutzer -EmailAddresses $aliase
-    Write-Host "E-Mail-Aliasse zum neuen Konto hinzugefügt"
+    Write-Host "E-Mail-Aliasse zum neuen Konto hinzugefuegt"
 
 
 }
