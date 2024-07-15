@@ -1,10 +1,10 @@
 # Globale Variablen
-$Path = "C:\Pfad"
+$Path = "Pfad zur CSV"
 
 # Importieren der Benutzerliste aus der CSV-Datei
 $BenutzerListe = Import-Csv -Path $Path
 
-# Durchlaufen der Benutzerliste und Ausführen der Befehle
+# Durchlaufen der Benutzerliste und Ausfuehren der Befehle
 foreach ($Benutzer in $BenutzerListe) {
 
     Write-Host "Verarbeite Benutzer: $($Benutzer.AlterBenutzer)" # Aktuellen Benutzer anzeigen
@@ -24,7 +24,7 @@ foreach ($Benutzer in $BenutzerListe) {
     Write-Host "Altes Postfach deaktiviert"
 
 
-    # Warten, bis das Postfach vollständig deaktiviert ist
+    # Warten, bis das Postfach vollstaendig deaktiviert ist
     Start-Sleep -Seconds 5
 
     # Verbinden des Postfachs mit einem neuen Benutzerkonto
@@ -32,7 +32,7 @@ foreach ($Benutzer in $BenutzerListe) {
     Write-Host "Postfach mit neuem Benutzerkonto verbunden"
 
 
-    # E-Mail-Aliasse zum neuen Konto hinzufügen
+    # E-Mail-Aliasse zum neuen Konto hinzufuegen
     Set-Mailbox -Identity $Benutzer.NeuerBenutzer -EmailAddresses $aliase
     Write-Host "E-Mail-Aliasse zum neuen Konto hinzugefügt"
 
@@ -40,5 +40,5 @@ foreach ($Benutzer in $BenutzerListe) {
 }
 
 # Aufbau der CSV-Datei:
-# Spalte 1: AlterUser
-# Spalte 2: NeuerUser
+# Spalte 1: AlterUser@domain.com
+# Spalte 2: NeuerUser@domain.com
