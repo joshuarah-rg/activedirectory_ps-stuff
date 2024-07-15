@@ -15,7 +15,7 @@ foreach ($Benutzer in $BenutzerListe) {
 
     # E-Mail-Aliasse vom alten Konto abrufen
     $alteMailbox = Get-Mailbox -Identity $Benutzer.AlterBenutzer
-    $aliase = $alteMailbox.EmailAddresses
+    $aliase = $alteMailbox.EmailAddresses | ForEach-Object { Write-Host $_ }
     Write-Host "E-Mail-Aliasse abgerufen"
 
 
