@@ -13,12 +13,6 @@ foreach ($Benutzer in $BenutzerListe) {
     $MailboxDatenbank = (Get-Mailbox -Identity $Benutzer.AlterBenutzer).Database
     Write-Host "Mailbox-Datenbank gefunden: $MailboxDatenbank"
 
-    # E-Mail-Aliasse vom alten Konto abrufen
-    $alteMailbox = Get-Mailbox -Identity $Benutzer.AlterBenutzer
-    $aliase = $alteMailbox.EmailAddresses | ForEach-Object { Write-Host $_ }
-    Write-Host "E-Mail-Aliasse abgerufen"
-
-
     # Deaktivieren des alten Benutzerpostfachs
     Disable-Mailbox -Identity $Benutzer.AlterBenutzer -Confirm:$false
     Write-Host "Altes Postfach deaktiviert"
@@ -30,11 +24,6 @@ foreach ($Benutzer in $BenutzerListe) {
     # Verbinden des Postfachs mit einem neuen Benutzerkonto
     Connect-Mailbox -Identity $Benutzer.AlterBenutzer -Database $MailboxDatenbank -User $Benutzer.NeuerBenutzer 
     Write-Host "Postfach mit neuem Benutzerkonto verbunden"
-
-
-    # E-Mail-Aliasse zum neuen Konto hinzufuegen
-    Set-Mailbox -Identity $Benutzer.NeuerBenutzer -EmailAddresses $aliase
-    Write-Host "E-Mail-Aliasse zum neuen Konto hinzugefuegt"
 
 
 }
