@@ -1,3 +1,6 @@
+# Laden des Exchange-SnapIn's
+Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn
+
 # Globale Variablen
 $Path = "Pfad zur CSV"
 
