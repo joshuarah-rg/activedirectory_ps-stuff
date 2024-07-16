@@ -17,8 +17,7 @@ foreach ($Benutzer in $BenutzerListe) {
     Disable-Mailbox -Identity $Benutzer.AlterBenutzer -Confirm:$false
     Write-Host "Altes Postfach deaktiviert"
 
-
-    # Warten, bis das Postfach vollstaendig deaktiviert ist
+    #Warten, bis das Postfach vollstaendig deaktiviert ist
     Start-Sleep -Seconds 5
 
     # Verbinden des Postfachs mit einem neuen Benutzerkonto
