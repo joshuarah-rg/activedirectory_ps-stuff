@@ -21,15 +21,16 @@
 # Define the CSV file location and import the data
 $Csvfile = "C:\_ADSync\export.csv"
 $Users = Import-Csv $Csvfile -Delimiter ';'
-
-# The password for the new user
-$Password = "P@ssw0rd1234"
+$CredentialsOutput = "C:\_ADSync\Credentials.txt"
 
 # Import the Active Directory module
 Import-Module ActiveDirectory
 
 # Loop through each user
 foreach ($User in $Users) {
+    
+    $randomPassword = -join ((65..90) + (97..122) | Get-Random -Count 12 | % {[char]$_})
+    
     try {
         # Retrieve the Manager distinguished name
         $managerDN = if ($User.'Manager') {
@@ -60,10 +61,14 @@ foreach ($User in $Users) {
             OfficePhone           = $User.'Telephone number'
             EmailAddress          = $User.'E-mail'
             MobilePhone           = $User.'Mobile'
-            AccountPassword       = (ConvertTo-SecureString "$Password" -AsPlainText -Force)
+            AccountPassword       = (ConvertTo-SecureString "$randomPassword" -AsPlainText -Force)
             Enabled               = if ($User.'Account status' -eq "Enabled") { $true } else { $false }
             ChangePasswordAtLogon = $true # Set the "User must change password at next logon"
         }
+
+        # Speichern des Passwortes je User
+        $PasswordOut = "`nUser: $($User.'User principal name') | Passwort: $randomPassword"
+        $PasswordOut | Out-File -FilePath $CredentialsOutput -Append
 
         # Hinzufügen des Attributes <mailNickname> zur BenutzerEntität über die Variable <alias>
         $NewUserParams.OtherAttributes = @{mailNickname = $User.alias }
