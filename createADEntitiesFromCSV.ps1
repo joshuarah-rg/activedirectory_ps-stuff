@@ -57,7 +57,7 @@ foreach ($User in $Users) {
             Manager               = $managerDN
             Path                  = $User.'OU'
             Description           = $User.'Description'
-            Office                = $User.'Office'
+            Office                = $User.'Company'
             OfficePhone           = $User.'Telephone number'
             EmailAddress          = $User.'E-mail'
             MobilePhone           = $User.'Mobile'
