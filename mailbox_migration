@@ -1,0 +1,33 @@
+# Globale Variablen
+$Path = "C:\Skripte\JRA\us.csv"
+
+# Laden des Exchange-SnapIn's
+Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn
+
+clear
+
+# Importieren der Benutzerliste aus der CSV-Datei
+$BenutzerListe = Import-Csv -Path $Path -Delimiter ';'
+
+# Durchlaufen der Benutzerliste
+foreach ($Benutzer in $BenutzerListe) {
+    
+    $MBRAWID = (Get-Mailbox -Identity $Benutzer.AlterBenutzer).ExchangeGuid
+    $MBID = [Microsoft.Exchange.Configuration.Tasks.MailboxIdParameter]::Parse($MBRAWID)
+    $MBDB = (Get-Mailbox -Identity $Benutzer.AlterBenutzer).Database
+    
+    Disable-Mailbox -Identity $MBID -Confirm:$false -ErrorAction Stop
+    
+    Update-StoreMailboxState -Database $MBDB -Identity $MBRAWID -Confirm:$false
+
+    Start-Sleep -Seconds 5
+
+    while ((Get-Mailbox -Identity $MBRAWID).ObjectState -ne "Disabled")
+    {
+    Update-StoreMailboxState -Database $MBDB -Identity $MBRAWID -Confirm:$false
+    }
+        
+    Connect-Mailbox -Database $MBDB -Identity $MBRAWID -User $($Benutzer.NeuerBenutzer) -Confirm:$false
+
+}
+
