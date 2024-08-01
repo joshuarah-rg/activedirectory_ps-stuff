@@ -1,9 +1,9 @@
-# Define the CSV file location and import the data
+# Pfade zu wichtigen Dateien
 $Csvfile = "C:\_ADSync\export.csv"
 $Users = Import-Csv $Csvfile -Delimiter ';'
 $CredentialsOutput = "C:\_ADSync\Credentials.txt"
 
-# Import the Active Directory module
+# Importieren des Active Directory Moduls
 Import-Module ActiveDirectory
 
 # Loop through each user
@@ -12,13 +12,13 @@ foreach ($User in $Users) {
     $randomPassword = -join ((65..90) + (97..122) | Get-Random -Count 12 | % {[char]$_})
     
     try {
-        # Retrieve the Manager distinguished name
+        # Definieren des Managers
         $managerDN = if ($User.'Manager') {
             Get-ADUser -Filter "DisplayName -eq '$($User.'Manager')'" -Properties DisplayName |
             Select-Object -ExpandProperty DistinguishedName
         }
 
-        # Define the parameters using a hashtable
+        # Parameter über eine Hashtabelle definieren
         $NewUserParams = @{
             Name                  = "$($User.'Last name'), $($User.'First name')"
             GivenName             = $User.'First name'
@@ -56,26 +56,25 @@ foreach ($User in $Users) {
         # Hinzufügen des Attributes <employeeNumber> zur BenutzerEntität über die Variable <personalnummer>
         $NewUserParams.OtherAttributes = @{employeeNumber = $User.personalnummer}
 
-        # Add the info attribute to OtherAttributes only if Notes field contains a value
+        # Info Attribut setzen, sofern es nicht leer ist
         if (![string]::IsNullOrEmpty($User.Notes)) {
             $NewUserParams.OtherAttributes = @{info = $User.Notes }
         }
 
-        # Check to see if the user already exists in AD
+        # Überprüfen, ob der Benutzer bereits existiert
         if (Get-ADUser -Filter "SamAccountName -eq '$($User.'User logon name')'") {
 
-            # Give a warning if user exists
+            # Warnung, wenn der Benutzer bereits existiert
             Write-Host "A user with username $($User.'User logon name') already exists in Active Directory." -ForegroundColor Yellow
         }
         else {
-            # User does not exist then proceed to create the new user account
-            # Account will be created in the OU provided by the $User.OU variable read from the CSV file
+            # Wenn kein gleichlautender Benutzer existiert mit Erstellung fortfahren
             New-ADUser @NewUserParams
             Write-Host "The user $($User.'User logon name') is created successfully." -ForegroundColor Green
         }
     }
     catch {
-        # Handle any errors that occur during account creation
+        # Error-Resilienz
         Write-Host "Failed to create user $($User.'User logon name') - $($_.Exception.Message)" -ForegroundColor Red
     }
 }
