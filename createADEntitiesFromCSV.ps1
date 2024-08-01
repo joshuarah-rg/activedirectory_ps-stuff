@@ -1,23 +1,3 @@
-<#
-    .SYNOPSIS
-    Import-ADUsers.ps1
-
-    .DESCRIPTION
-    Import Active Directory users from CSV file.
-
-    .LINK
-    alitajran.com/import-ad-users-from-csv-powershell
-
-    .NOTES
-    Written by: ALI TAJRAN
-    Website:    alitajran.com
-    LinkedIn:   linkedin.com/in/alitajran
-
-    .CHANGELOG
-    V2.00, 02/11/2024 - Refactored script
-#>
-
-
 # Define the CSV file location and import the data
 $Csvfile = "C:\_ADSync\export.csv"
 $Users = Import-Csv $Csvfile -Delimiter ';'
