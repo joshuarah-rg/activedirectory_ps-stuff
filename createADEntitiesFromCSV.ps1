@@ -6,7 +6,7 @@ $CredentialsOutput = "C:\_ADSync\Credentials.txt"
 # Importieren des Active Directory Moduls
 Import-Module ActiveDirectory
 
-# Loop through each user
+# Loop je Benutzer
 foreach ($User in $Users) {
     
     $randomPassword = -join ((65..90) + (97..122) | Get-Random -Count 12 | % {[char]$_})
